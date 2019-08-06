@@ -20,11 +20,13 @@ public class GeoRelationServiceImpl implements GeoRelationService {
         Geometry g2 = convertPolygonToCoordinate(polygon2);
 
         // 判断两个多边形是否有交集
-//        Geometry overlap = g1.difference(g2);
-        Geometry overlap1 = g1.symDifference(g2);
+        Geometry intersection = g1.intersection(g2);
+        Geometry overlap1 = g1.symDifference(g2);  // 获取两个区域没有交集的部分
 
         GeoRelationRequest result = new GeoRelationRequest();
-        result.setPolygon1(convertGeometryToPolygon(overlap1.getGeometryN(0)));
+        g1 = overlap1.getGeometryN(0);
+        g1 = g1.union(intersection);
+        result.setPolygon1(convertGeometryToPolygon(g1));
         result.setPolygon2(convertGeometryToPolygon(overlap1.getGeometryN(1)));
 
         return result;
@@ -57,7 +59,6 @@ public class GeoRelationServiceImpl implements GeoRelationService {
         int size = geometry.getNumPoints();
         Coordinate[] co = geometry.getCoordinates();
         for (int i=0; i < size-1; i++) {  // 不要最后一个点（与第一个点重合）
-            System.out.println(co[i]);
             GeoPoint point = new GeoPoint();
             point.setLat(co[i].getX());
             point.setLng(co[i].getY());
