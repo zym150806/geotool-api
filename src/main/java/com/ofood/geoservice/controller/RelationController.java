@@ -34,7 +34,13 @@ public class RelationController {
 
     // 处理两个区域超出
     @RequestMapping(value="/overflow", method= RequestMethod.POST)
-    public ResponseEntity<JsonResult> formatOverflow() {
-        return null;
+    public ResponseEntity<JsonResult> formatOverflow(@RequestBody String postPayload) {
+        GeoRelationRequest params = JSONObject.parseObject(postPayload, GeoRelationRequest.class);
+        GeoRelationRequest result = geoRelationService.handleOverflow(params.getPolygon1(), params.getPolygon2());
+
+        JsonResult r = new JsonResult();
+        r.setMsg("haha overlap");
+        r.setData(result);
+        return ResponseEntity.ok(r);
     }
 }
