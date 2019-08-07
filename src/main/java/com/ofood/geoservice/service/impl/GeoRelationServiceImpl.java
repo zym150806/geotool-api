@@ -40,9 +40,8 @@ public class GeoRelationServiceImpl implements GeoRelationService {
 
         Geometry contain = bigGeo.intersection(smallGeo);  // 获取两个区域相交的部分
 
-//        smallGeo = smallGeo.union(intersection);
-//        result.setPolygon1(convertGeometryToPolygon(g1));
-//        result.setPolygon2(convertGeometryToPolygon(overlap1.getGeometryN(1)));
+        result.setPolygon1(convertGeometryToPolygon(bigGeo));
+        result.setPolygon2(convertGeometryToPolygon(contain));
 
         return result;
     }
