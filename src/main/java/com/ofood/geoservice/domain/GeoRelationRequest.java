@@ -6,10 +6,10 @@ import org.locationtech.jts.geom.Coordinate;
 import java.util.List;
 
 public class GeoRelationRequest {
-    @JSONField(name = "point1")
+    @JSONField(name = "polygon1")
     private List<GeoPoint> polygon1;
 
-    @JSONField(name = "point2")
+    @JSONField(name = "polygon2")
     private List<GeoPoint> polygon2;
 
     public List<GeoPoint> getPolygon1() {

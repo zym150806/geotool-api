@@ -19,11 +19,11 @@ public class GeoRelationServiceImpl implements GeoRelationService {
         Geometry g1 = convertPolygonToCoordinate(polygon1);
         Geometry g2 = convertPolygonToCoordinate(polygon2);
 
-        // 判断两个多边形是否有交集
-        Geometry intersection = g1.intersection(g2);
+        GeoRelationRequest result = new GeoRelationRequest();
+
+        Geometry intersection = g1.intersection(g2);  // 两个区域的交集
         Geometry overlap1 = g1.symDifference(g2);  // 获取两个区域没有交集的部分
 
-        GeoRelationRequest result = new GeoRelationRequest();
         g1 = overlap1.getGeometryN(0);
         g1 = g1.union(intersection);
         result.setPolygon1(convertGeometryToPolygon(g1));
@@ -31,6 +31,25 @@ public class GeoRelationServiceImpl implements GeoRelationService {
 
         return result;
     }
+
+    public GeoRelationRequest handleOverflow(List<GeoPoint> bigPolygon, List<GeoPoint> smallPolygon) {
+        Geometry bigGeo = convertPolygonToCoordinate(bigPolygon);
+        Geometry smallGeo = convertPolygonToCoordinate(smallPolygon);
+
+        GeoRelationRequest result = new GeoRelationRequest();
+
+        Geometry contain = bigGeo.intersection(smallGeo);  // 获取两个区域相交的部分
+
+//        smallGeo = smallGeo.union(intersection);
+//        result.setPolygon1(convertGeometryToPolygon(g1));
+//        result.setPolygon2(convertGeometryToPolygon(overlap1.getGeometryN(1)));
+
+        return result;
+    }
+
+
+
+
 
     private Geometry convertPolygonToCoordinate(List<GeoPoint> points) {
         int size = points.size();
